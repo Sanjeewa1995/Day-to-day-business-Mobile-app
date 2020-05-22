@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1000551506191",
+    "firebase_url": "https://day-to-day-business.firebaseio.com",
+    "project_id": "day-to-day-business",
+    "storage_bucket": "day-to-day-business.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000551506191:android:bcddc7ce860c5362ce5e7a",
+        "android_client_info": {
+          "package_name": "com.example.day_to_day_business"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000551506191-7uflkgibc0dvdjvchn557kmhncejc80c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1TWy8_pYP0VvZmwtjH9ZzU60NeI1mJx8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000551506191-7uflkgibc0dvdjvchn557kmhncejc80c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
