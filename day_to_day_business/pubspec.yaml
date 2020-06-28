@@ -21,6 +21,8 @@ dependencies:
     sdk: flutter
   cloud_firestore: ^0.13.5
   provider: ^4.1.2
+  google_fonts: ^1.1.0
+  hexcolor: ^1.0.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -29,6 +31,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  intl: ^0.16.1
+  flutter_rounded_date_picker: ^1.0.4
+
 
 
 # For information on the generic Dart part of this file, see the
@@ -45,6 +50,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/wijaya.jpg
+    - images/company.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
