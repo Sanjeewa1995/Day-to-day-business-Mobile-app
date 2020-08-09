@@ -13,6 +13,21 @@ class CashSetle extends StatefulWidget {
 }
 
 class _CashSetleState extends State<CashSetle> {
+  FocusNode _c5000Focus = FocusNode();
+  FocusNode _c1000Focus = FocusNode();
+  FocusNode _c500Focus = FocusNode();
+  FocusNode _c100Focus = FocusNode();
+  FocusNode _c50Focus = FocusNode();
+  FocusNode _c20Focus = FocusNode();
+  FocusNode _coinFocus = FocusNode();
+
+  TextEditingController _c5000Controller = TextEditingController();
+  TextEditingController _c1000Controller = TextEditingController();
+  TextEditingController _c500Controller = TextEditingController();
+  TextEditingController _c100Controller = TextEditingController();
+  TextEditingController _c50Controller = TextEditingController();
+  TextEditingController _c20Controller = TextEditingController();
+  TextEditingController _coinController = TextEditingController();
 
   int cash5000;
   int cash1000;
@@ -24,170 +39,71 @@ class _CashSetleState extends State<CashSetle> {
   int tCash;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _date = DateFormat.yMMMMd().format( DateTime.now());
-  String _month =  DateFormat().add_M().format(DateTime.now());
-  String _year =DateTime.now().year.toString();
-  String _day =DateTime.now().day.toString();
+  String _date = DateFormat.yMMMMd().format(DateTime.now());
+  String _month = DateFormat().add_M().format(DateTime.now());
+  String _year = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
 
-  _dateFlicker() async{
+
+  _dateFlicker() async {
     DateTime _dateTime = await showRoundedDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 10),
-      lastDate: DateTime(DateTime.now().year + 10),
-      borderRadius: 16,
-      theme: ThemeData.dark()
-    );
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+        borderRadius: 16,
+        theme: ThemeData.dark());
     setState(() {
-      _date =  DateFormat.yMMMMd().format( _dateTime);
-      _month = DateFormat().add_M().format( _dateTime);
-      _year =_dateTime.year.toString();
-      _day =_dateTime.day.toString();
+      _date = DateFormat.yMMMMd().format(_dateTime);
+      _month = DateFormat().add_M().format(_dateTime);
+      _year = _dateTime.year.toString();
+      _day = _dateTime.day.toString();
     });
   }
 
-    _selectDate(){
+  _selectDate() {
     return MyRaisedButton(
-      onPressed:(){
-      _dateFlicker();
+      onPressed: () {
+        _dateFlicker();
       },
       size: 250.0,
       color: Colors.blue,
       textColor: Colors.white,
       label: _date,
       roundedBorde: false,
-    );}
-
-    Widget _build5000(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash5000 = int.parse(value)*5000;
-      },
-      labelText: '5000',
-      hintText: 'Enter number of 5000',
     );
   }
 
-   Widget _build1000(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash1000 = int.parse(value)*1000;
-      },
-      labelText: '1000',
-      hintText: 'Enter number of 1000',
-    );
+  _tCash() {
+    tCash = int.parse(_c5000Controller.text) * 5000 +
+        int.parse(_c1000Controller.text) * 1000 +
+        int.parse(_c100Controller.text) * 100 +
+        int.parse(_c500Controller.text) * 500 +
+        int.parse(_c50Controller.text) * 50 +
+        int.parse(_c20Controller.text) * 20 +
+        int.parse(_coinController.text);
   }
 
-   Widget _build500(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash500 = int.parse(value)*500;
-      },
-      labelText: '500',
-      hintText: 'Enter number of 500',
-    );
-  }
-
-   Widget _build100(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash100 = int.parse(value)*100;
-      },
-      labelText: '100',
-      hintText: 'Enter number of 100',
-    );
-  }
-
-   Widget _build50(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash50 = int.parse(value)*50;
-      },
-      labelText: '50',
-      hintText: 'Enter number of 50',
-    );
-  }
-
-   Widget _build20(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'cash is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cash20 = int.parse(value)*20;
-      },
-      labelText: '20',
-      hintText: 'Enter number of 20',
-    );
-  }
-
-   Widget _buildCoin(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'coin is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        coin = int.parse(value);
-      },
-      labelText: 'Totol value of coins',
-      hintText: 'Enter totol value',
-    );
-  }
-
-  _tCash(){
-    tCash = cash5000 + cash100 + cash1000 + cash500 + cash50 + cash20 + coin;
-  }
-
-    _save(){
+  _save() {
     return MyRaisedButton(
-      onPressed:(){
-        if(!_formKey.currentState.validate()){
-                  return;
-                  }
+      onPressed: () {
+        if (!_formKey.currentState.validate()) {
+          return;
+        }
         _formKey.currentState.save();
         _tCash();
-        if(tCash != null){
-        Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TSummery(tCash:tCash , year:_year , month:_month, day:_day, date:_date,)));
-        } else{
+        if (tCash != null) {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => TSummery(
+                        tCash: tCash,
+                        year: _year,
+                        month: _month,
+                        day: _day,
+                        date: _date,
+                      )));
+        } else {
           Text('Loding......');
         }
       },
@@ -196,40 +112,101 @@ class _CashSetleState extends State<CashSetle> {
       textColor: Colors.white,
       label: 'Submit',
       roundedBorde: true,
-    );}
-
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:AppBar(
-        centerTitle: true,
-        title:Text('Cash Setle')
-      ),
-      body: ListView(children: <Widget>[
-        SizedBox(height:10.0),
-        _selectDate(),
-        SizedBox(height:15.0),
-        Center(
-          child: Text('Enter Cash',
-          style: TextStyle(
-            fontSize:20.0,
-          ),
-          ),
-        ),
-        Form(
-          key:_formKey ,
-          child: Column(children: <Widget>[
-          _build5000(),
-          _build1000(),
-          _build500(),
-          _build100(),
-          _build50(),
-          _build20(),
-          _buildCoin(),
-        ],)),
-          _save(),
-      ],));
+        backgroundColor: Color(0xFF2d4059),
+        appBar: AppBar(centerTitle: true, title: Text('Cash Setle')),
+        body: ListView(
+          children: <Widget>[
+            SizedBox(height: 10.0),
+            _selectDate(),
+            SizedBox(height: 15.0),
+            Center(
+              child: Text(
+                'Enter Cash',
+                style: TextStyle(
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    ReuseTextField(
+                      label: '5000',
+                      controller: _c5000Controller,
+                      focusNode: _c5000Focus,
+                      nextNode: _c1000Focus,
+                    ),
+                    ReuseTextField(
+                      label: '1000',
+                      controller: _c1000Controller,
+                      focusNode: _c1000Focus,
+                      nextNode: _c500Focus,
+                    ),
+                    ReuseTextField(
+                      label: '500',
+                      controller: _c500Controller,
+                      focusNode: _c500Focus,
+                      nextNode: _c100Focus,
+                    ),
+                    ReuseTextField(
+                      label: '100',
+                      controller: _c100Controller,
+                      focusNode: _c100Focus,
+                      nextNode: _c50Focus,
+                    ),
+                    ReuseTextField(
+                      label: '50',
+                      controller: _c50Controller,
+                      focusNode: _c50Focus,
+                      nextNode: _c20Focus,
+                    ),
+                    ReuseTextField(
+                      label: '20',
+                      controller: _c20Controller,
+                      focusNode: _c20Focus,
+                      nextNode: _coinFocus,
+                    ),
+                    ReuseTextField(
+                      label: 'Coin',
+                      controller: _coinController,
+                      focusNode: _coinFocus,
+                      //nextNode: _1000Focus,
+                    ),
+                  ],
+                )),
+            _save(),
+          ],
+        ));
+  }
+}
+
+class ReuseTextField extends StatelessWidget {
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final FocusNode nextNode;
+  final String label;
+
+  const ReuseTextField(
+      {Key key, this.controller, this.focusNode, this.nextNode, this.label})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MyTextFormField(
+      controller: controller,
+      labelText: label,
+      errorMsg: 'Cash is required',
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: focusNode,
+      nextNode: nextNode,
+    );
   }
 }

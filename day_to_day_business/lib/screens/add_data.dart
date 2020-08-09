@@ -7,121 +7,74 @@ import 'add_credit.dart';
 import 'cash_setle.dart';
 import 'company_cheque.dart';
 
-class AddData extends StatefulWidget {
-  AddData({Key key}) : super(key: key);
-
-  _AddDataState createState() => _AddDataState();
-}
-
-class _AddDataState extends State<AddData> {
-  _myRaisedButtonAddSale() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => EnterData()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Add Data',
-      roundedBorde: false,
-    );
-  }
-
-  _myRaisedButtonAddCheck() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddCheck()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Add Cheque',
-      roundedBorde: false,
-    );
-  }
-
-  _myRaisedButtonAddCredit() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => AddCredit()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Add Credit',
-      roundedBorde: false,
-    );
-  }
-
-  _home() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Home',
-      roundedBorde: false,
-    );
-  }
-
-  _cashSetle() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CashSetle()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Cash Setle',
-      roundedBorde: false,
-    );
-  }
-
-  _companyCheque() {
-    return MyRaisedButton(
-      onPressed: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CompanyCheque()));
-      },
-      size: 250.0,
-      color: Colors.blue,
-      textColor: Colors.white,
-      label: 'Company Cheque',
-      roundedBorde: false,
-    );
-  }
+class AddData extends StatelessWidget {
+  const AddData({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF2d4059),
-        appBar: AppBar(centerTitle: true, title: Text('Add Data')),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(height: 20.0),
-            Center(child: _myRaisedButtonAddSale()),
-            SizedBox(height: 20.0),
-            Center(child: _myRaisedButtonAddCheck()),
-            SizedBox(height: 20.0),
-            Center(child: _myRaisedButtonAddCredit()),
-            SizedBox(
-              height: 20.0,
-            ),
-            _companyCheque(),
-            SizedBox(height: 20.0),
-            _cashSetle(),
-            SizedBox(height: 20.0),
-            _home()
-          ],
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text('Add Data'),
+          backgroundColor: Color(0xFF19769F),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              ReusableButton(
+                labelText: 'Add Data',
+                nextPage: EnterData(),
+              ),
+              ReusableButton(
+                labelText: 'Add Cheque',
+                nextPage: AddCheck(),
+              ),
+              ReusableButton(
+                labelText: 'Add Credit',
+                nextPage: AddCredit(),
+              ),
+              ReusableButton(
+                labelText: 'Company Cheque',
+                nextPage: CompanyCheque(),
+              ),
+              ReusableButton(
+                labelText: 'Cash Setle',
+                nextPage: CashSetle(),
+              ),
+              ReusableButton(
+                labelText: 'Home',
+                nextPage: Home(),
+              ),
+            ],
+          ),
         ));
+  }
+}
+
+class ReusableButton extends StatelessWidget {
+  final String labelText;
+  final Widget nextPage;
+
+  const ReusableButton({@required this.labelText, @required this.nextPage});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 0.0),
+      child: MyRaisedButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => nextPage));
+        },
+        size: MediaQuery.of(context).size.width,
+        textColor: Colors.white,
+        label: labelText,
+        roundedBorde: false,
+      ),
+    );
   }
 }

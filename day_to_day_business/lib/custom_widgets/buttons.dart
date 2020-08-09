@@ -8,7 +8,6 @@ class MyRaisedButton extends StatelessWidget {
   final String label;
   final bool roundedBorde;
 
-
   MyRaisedButton({
     this.onPressed,
     this.color,
@@ -21,36 +20,44 @@ class MyRaisedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child:  Container(
-        width: size,
-        height: 50.0,
-        child: RaisedButton(
-        onPressed: onPressed,
-        padding: const EdgeInsets.all(0.0),
-        child:  Container(
-             // height: 50.0,
-             // width: 150.0,
-              decoration:   BoxDecoration(
-                gradient: LinearGradient(
-                  colors: <Color>[
-                    Color(0xFF0D47A1),
-                    Color(0xFF1976D2),
-                    Color(0xFF42A5F5),
-                  ],
-                ),
-                borderRadius: roundedBorde? BorderRadius.circular(20.0) :  BorderRadius.circular(0.0)
-              ),
-              child:Center(
+      child: Card(
+        elevation: 10.0,
+        shape: RoundedRectangleBorder(
+            borderRadius: roundedBorde
+                ? BorderRadius.circular(20.0)
+                : BorderRadius.circular(0.0)),
+        child: Container(
+          width: size,
+          height: 50.0,
+          child: RaisedButton(
+            onPressed: onPressed,
+            padding: const EdgeInsets.all(0.0),
+            child: Container(
+              // height: 50.0,
+              // width: 150.0,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Color(0xFF19769F),
+                      Color(0xFF5FE5BC),
+                    ],
+                  ),
+                  borderRadius: roundedBorde
+                      ? BorderRadius.circular(20.0)
+                      : BorderRadius.circular(0.0)),
+              child: Center(
                 child: Text(label, style: TextStyle(fontSize: 20)),
               ),
             ),
-        color: color,
-        textColor: textColor,
-        shape:  RoundedRectangleBorder(
-        borderRadius:  roundedBorde? BorderRadius.circular(20.0) :  BorderRadius.circular(0.0)
+            color: color,
+            textColor: textColor,
+            shape: RoundedRectangleBorder(
+                borderRadius: roundedBorde
+                    ? BorderRadius.circular(20.0)
+                    : BorderRadius.circular(0.0)),
+          ),
         ),
-        ),
-      ) ,
-      );
+      ),
+    );
   }
 }

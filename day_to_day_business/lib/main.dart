@@ -1,4 +1,3 @@
-
 import 'package:day_to_day_business/screens/dates.dart';
 import 'package:day_to_day_business/screens/detail_page.dart';
 import 'package:day_to_day_business/screens/enter_data.dart';
@@ -13,12 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-    
       debugShowCheckedModeBanner: false,
       home: SelectCompany(),
       routes: {
         "/home": (context) => Home(),
-        "/select_company":(context) => SelectCompany(),
+        "/select_company": (context) => SelectCompany(),
         "/enter_data": (context) => EnterData(),
         "/dates": (context) => Dates(),
         "/detail_page": (context) => Detail(),
@@ -26,4 +24,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-

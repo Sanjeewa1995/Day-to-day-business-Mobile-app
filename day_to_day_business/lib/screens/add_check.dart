@@ -13,6 +13,12 @@ class AddCheck extends StatefulWidget {
 
 class _AddCheckState extends State<AddCheck> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  FocusNode _nameFocus = FocusNode();
+  FocusNode _addressFocus = FocusNode();
+  FocusNode _numberFocus = FocusNode();
+  FocusNode _valueFocus = FocusNode();
+
   String name;
   int number;
   int cValue;
@@ -24,7 +30,6 @@ class _AddCheckState extends State<AddCheck> {
   String _date = DateFormat.yMMMMd().format(DateTime.now());
   String _month = DateFormat().add_M().format(DateTime.now());
   String _year = DateTime.now().year.toString();
-  String _day = DateTime.now().day.toString();
 
   _dateFlicker() async {
     DateTime _dateTime = await showRoundedDatePicker(
@@ -38,7 +43,6 @@ class _AddCheckState extends State<AddCheck> {
       _date = DateFormat.yMMMMd().format(_dateTime);
       _month = DateFormat().add_M().format(_dateTime);
       _year = _dateTime.year.toString();
-      _day = _dateTime.day.toString();
     });
   }
 
@@ -69,67 +73,58 @@ class _AddCheckState extends State<AddCheck> {
 
   Widget _buildName() {
     return MyTextFormField(
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Name is required';
-        }
-        return null;
-      },
+      errorMsg: 'Name is required',
       onSaved: (String value) {
         name = value;
       },
       labelText: 'Name Of The Owner',
       hintText: 'Enter Name',
+      textInputAction: TextInputAction.next,
+      focusNode: _nameFocus,
+      nextNode: _addressFocus,
     );
   }
 
   Widget _buildAdress() {
     return MyTextFormField(
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Adress is required';
-        }
-        return null;
-      },
+      errorMsg: 'Adress is required',
       onSaved: (String value) {
         adress = value;
       },
       labelText: 'Adress Of The Owner',
       hintText: 'Enter Adress',
+      textInputAction: TextInputAction.next,
+      focusNode: _addressFocus,
+      nextNode: _numberFocus,
     );
   }
 
   Widget _buildNumber() {
     return MyTextFormField(
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Cheque Number is required';
-        }
-        return null;
-      },
+      errorMsg: 'Cheque Number is required',
       onSaved: (String value) {
         number = int.parse(value);
       },
       labelText: 'Cheque Number',
       hintText: 'Enter Number',
       keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: _numberFocus,
+      nextNode: _valueFocus,
     );
   }
 
   Widget _buildValue() {
     return MyTextFormField(
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'Value is required';
-        }
-        return null;
-      },
+      errorMsg: 'Value is required',
       onSaved: (String value) {
         cValue = int.parse(value);
       },
       labelText: 'Value Of Cheque',
       hintText: 'Enter Value',
       keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: _valueFocus,
     );
   }
 
@@ -175,7 +170,7 @@ class _AddCheckState extends State<AddCheck> {
       size: 200.0,
       color: Colors.blue,
       textColor: Colors.white,
-      label: 'Check Data',
+      label: 'Confirm Data',
       roundedBorde: false,
     );
   }
@@ -184,7 +179,7 @@ class _AddCheckState extends State<AddCheck> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF2d4059),
-      appBar: AppBar(title: Text('Add Check')),
+      appBar: AppBar(centerTitle: true, title: Text('Add Check')),
       body: Form(
           key: _formKey,
           child: ListView(

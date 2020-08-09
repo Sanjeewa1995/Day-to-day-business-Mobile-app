@@ -4,8 +4,6 @@ import 'package:day_to_day_business/custom_widgets/text_form.dart';
 import 'package:day_to_day_business/custom_widgets/buttons.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EnterData extends StatefulWidget {
   EnterData({Key key}) : super(key: key);
@@ -14,180 +12,80 @@ class EnterData extends StatefulWidget {
 }
 
 class _EnterDataState extends State<EnterData> {
+  FocusNode _dateFocus = FocusNode();
+  FocusNode _saleFocus = FocusNode();
+  FocusNode _disccountFocus = FocusNode();
+  FocusNode _dieselFocus = FocusNode();
+  FocusNode _employeeFocus = FocusNode();
+  FocusNode _teaFocus = FocusNode();
+  FocusNode _otherCostFocus = FocusNode();
+
+  TextEditingController _dateController = TextEditingController();
+  TextEditingController _saleController = TextEditingController();
+  TextEditingController _disccountController = TextEditingController();
+  TextEditingController _dieselController = TextEditingController();
+  TextEditingController _employeeController = TextEditingController();
+  TextEditingController _teaController = TextEditingController();
+  TextEditingController _otherCostController = TextEditingController();
 
   int disccount;
   double profit;
-  bool validDate ;
+  bool validDate;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Model model = Model();
-  String _date = DateFormat.yMMMMd().format( DateTime.now());
-  String _month =  DateFormat().add_M().format(DateTime.now());
-  String _year =DateTime.now().year.toString();
-  String _day =DateTime.now().day.toString();
 
-  _dateFlicker() async{
+  Model model = Model();
+  String _date;
+  String _month;
+  String _year;
+  String _day;
+
+  Future<String> _dateFlicker() async {
     DateTime _dateTime = await showRoundedDatePicker(
       context: context,
       initialDate: DateTime.now(),
       firstDate: DateTime(DateTime.now().year - 10),
       lastDate: DateTime(DateTime.now().year + 10),
       borderRadius: 16,
-      theme: ThemeData.dark()
+      theme: ThemeData.dark(),
     );
-    setState(() {
-      _date =  DateFormat.yMMMMd().format( _dateTime);
-      _month = DateFormat().add_M().format( _dateTime);
-      _year =_dateTime.year.toString();
-      _day =_dateTime.day.toString();
-    });
+    _date = DateFormat.yMMMMd().format(_dateTime);
+    print(_dateTime);
+    _month = DateFormat().add_M().format(_dateTime);
+    _year = _dateTime.year.toString();
+    _day = _dateTime.day.toString();
+    return _date;
   }
 
-  _selectDateButton(){
+  _getFrofit() {
+    profit = double.parse(
+        (int.parse(_saleController.text) * (7 / 100)).toStringAsFixed(2));
+  }
+
+  _myRaisedButton() {
     return MyRaisedButton(
-      onPressed:(){
-        _dateFlicker();
-      },
-      color:Colors.blue,
-      size:300.0,
-      label: _date,
-      roundedBorde: false,
-
-    );
-  }
-
-  Widget _buildSale(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Sale is required';
+      onPressed: () async {
+        if (!_formKey.currentState.validate()) {
+          return;
         }
-        return null;
-      },
-      onSaved: (String value){
-        model.sale = int.parse(value);
-      },
-      labelText: 'Sale',
-      hintText: 'Enter Sale',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-   Widget _buildDisccount(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Disccount is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        disccount = int.parse(value);
-      },
-      labelText: 'Disccount',
-      hintText: 'Enter Disccount',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-  Widget _buildDiesel(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Diesel cost is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        model.diesel= int.parse(value);
-      },
-      labelText: 'Diesel',
-      hintText: 'Enter Diesel cost of today',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-  Widget _buildEmployee(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Employee cost is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        model.employee= int.parse(value);
-      },
-      labelText: 'Employee',
-      hintText: 'Enter employee cost of today',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-   Widget _buildTea(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Tea is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        model.tea= int.parse(value);
-      },
-      labelText: 'Tea',
-      hintText: 'Enter Tea cost of today',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-  Widget _buildOther(){
-    return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Other costs is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        model.other= int.parse(value);
-      },
-      labelText: 'Other Costs',
-      hintText: 'Enter Other cost of today',
-      keyboardType:TextInputType.number,
-    );
-  }
-
-  _getFrofit(){
-    profit =double.parse((model.sale * (7/100)).toStringAsFixed(2));
-  }
-
-
-  _myRaisedButton(){
-    return MyRaisedButton(
-      onPressed:(){
-        if(!_formKey.currentState.validate()){
-                  return;
-                  }
-                    _formKey.currentState.save();
-                    _getFrofit();
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TodaySummery(
-                          month: _month,
-                          year:_year,
-                          sale: model.sale,
-                          diesel: model.diesel,
-                          employee: model.employee,
-                          tea: model.tea,
-                          other: model.other,
-                          date:_date,
-                          discount:disccount,
-                          day:_day,
-                          profit:profit
-
-                        )));
+        _formKey.currentState.save();
+        await _getFrofit();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TodaySummery(
+                      date: _dateController.text,
+                      sale: int.parse(_saleController.text),
+                      discount: int.parse(_disccountController.text),
+                      diesel: int.parse(_dieselController.text),
+                      employee: int.parse(_employeeController.text),
+                      tea: int.parse(_teaController.text),
+                      other: int.parse(_otherCostController.text),
+                      profit: profit,
+                      year: _year,
+                      month: _month,
+                      day: _day,
+                    )));
       },
       size: 200.0,
       color: Colors.blue,
@@ -197,35 +95,83 @@ class _EnterDataState extends State<EnterData> {
     );
   }
 
- 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color(0xFF2d4059),
-      appBar:AppBar(
-        centerTitle:true,
-        title:Text('Today Data')
-      ),
-      body: Form(
-          key: _formKey,
-          child:ListView(
-            children:<Widget>[
-              SizedBox(height:10.0),
-              _selectDateButton(),
-                SizedBox(height:10.0),
-              _buildSale(),
-              _buildDisccount(),
-              _buildDiesel(),
-              _buildEmployee(),
-              _buildTea(),
-              _buildOther(),
-              SizedBox(height:50.0),
+        appBar: AppBar(centerTitle: true, title: Text('Today Data')),
+        body: Form(
+            key: _formKey,
+            child: ListView(padding: EdgeInsets.all(10.0), children: <Widget>[
+              MyTextFormField(
+                controller: _dateController,
+                labelText: "Date",
+                errorMsg: 'Date is required',
+                onTap: () async {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  await _dateFlicker();
+                  setState(() {
+                    _dateController.text = _date;
+                  });
+                },
+                textInputAction: TextInputAction.next,
+                focusNode: _dateFocus,
+                nextNode: _saleFocus,
+              ),
+              MyTextFormField(
+                controller: _saleController,
+                keyboardType: TextInputType.number,
+                labelText: 'Sale',
+                errorMsg: 'Sale is required',
+                textInputAction: TextInputAction.next,
+                focusNode: _saleFocus,
+                nextNode: _disccountFocus,
+              ),
+              MyTextFormField(
+                controller: _disccountController,
+                keyboardType: TextInputType.number,
+                labelText: 'Disccount',
+                errorMsg: 'Disccount is required',
+                textInputAction: TextInputAction.next,
+                focusNode: _disccountFocus,
+                nextNode: _dieselFocus,
+              ),
+              MyTextFormField(
+                controller: _dieselController,
+                keyboardType: TextInputType.number,
+                labelText: 'Diesel',
+                errorMsg: 'Diesel is required',
+                textInputAction: TextInputAction.next,
+                focusNode: _dieselFocus,
+                nextNode: _employeeFocus,
+              ),
+              MyTextFormField(
+                controller: _employeeController,
+                keyboardType: TextInputType.number,
+                labelText: 'Employee',
+                errorMsg: 'Employee is required',
+                textInputAction: TextInputAction.next,
+                focusNode: _employeeFocus,
+                nextNode: _teaFocus,
+              ),
+              MyTextFormField(
+                controller: _teaController,
+                keyboardType: TextInputType.number,
+                labelText: 'Tea',
+                errorMsg: 'Tea is required',
+                textInputAction: TextInputAction.next,
+                focusNode: _teaFocus,
+                nextNode: _otherCostFocus,
+              ),
+              MyTextFormField(
+                controller: _otherCostController,
+                keyboardType: TextInputType.number,
+                labelText: 'Other Cost',
+                errorMsg: 'Other cost is required',
+                textInputAction: TextInputAction.done,
+                focusNode: _otherCostFocus,
+              ),
               _myRaisedButton(),
-            ]
-          )
-        )
-    );
+            ])));
   }
 }

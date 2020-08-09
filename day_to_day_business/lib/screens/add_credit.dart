@@ -12,8 +12,13 @@ class AddCredit extends StatefulWidget {
 }
 
 class _AddCreditState extends State<AddCredit> {
-
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  FocusNode _nameFocus = FocusNode();
+  FocusNode _addressFocus = FocusNode();
+  FocusNode _phoneFocus = FocusNode();
+  FocusNode _invoiceFocus = FocusNode();
+  FocusNode _valueFocus = FocusNode();
 
   String name;
   String pNumber;
@@ -21,144 +26,129 @@ class _AddCreditState extends State<AddCredit> {
   int cValue;
   String adress;
 
-  String _date = DateFormat.yMMMMd().format( DateTime.now());
-  String _month =  DateFormat().add_M().format(DateTime.now());
-  String _year =DateTime.now().year.toString();
-  String _day =DateTime.now().day.toString();
+  String _date = DateFormat.yMMMMd().format(DateTime.now());
+  String _month = DateFormat().add_M().format(DateTime.now());
+  String _year = DateTime.now().year.toString();
 
-  _dateFlicker() async{
+  _dateFlicker() async {
     DateTime _dateTime = await showRoundedDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(DateTime.now().year - 10),
-      lastDate: DateTime(DateTime.now().year + 10),
-      borderRadius: 16,
-      theme: ThemeData.dark()
-    );
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(DateTime.now().year - 10),
+        lastDate: DateTime(DateTime.now().year + 10),
+        borderRadius: 16,
+        theme: ThemeData.dark());
     setState(() {
-      _date =  DateFormat.yMMMMd().format( _dateTime);
-      _month = DateFormat().add_M().format( _dateTime);
-      _year =_dateTime.year.toString();
-      _day =_dateTime.day.toString();
+      _date = DateFormat.yMMMMd().format(_dateTime);
+      _month = DateFormat().add_M().format(_dateTime);
+      _year = _dateTime.year.toString();
     });
   }
 
-  _selectDateButton(){
+  _selectDateButton() {
     return MyRaisedButton(
-      onPressed:(){
+      onPressed: () {
         _dateFlicker();
       },
-      color:Colors.blue,
-      size:300.0,
+      color: Colors.blue,
+      size: 300.0,
       label: _date,
       roundedBorde: false,
-
     );
   }
 
-   Widget _buildName(){
+  Widget _buildName() {
     return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Name is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
+      errorMsg: 'Name is required',
+      onSaved: (String value) {
         name = value;
       },
       labelText: 'Name Of The Owner',
       hintText: 'Enter Name',
+      textInputAction: TextInputAction.next,
+      focusNode: _nameFocus,
+      nextNode: _addressFocus,
     );
   }
 
-   Widget _buildPNumber(){
+  Widget _buildPNumber() {
     return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Phone Number is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
+      errorMsg: 'Phone Number is required',
+      onSaved: (String value) {
         pNumber = value;
       },
       labelText: 'Phone Number',
       hintText: 'Enter Phone Number',
+      textInputAction: TextInputAction.next,
+      focusNode: _phoneFocus,
+      nextNode: _invoiceFocus,
     );
   }
 
-   Widget _buildInvoice(){
+  Widget _buildInvoice() {
     return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Invoice is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
+      errorMsg: 'Invoice is required',
+      onSaved: (String value) {
         invoice = value;
       },
       labelText: 'Invoice Number',
       hintText: 'Enter Invoice Number',
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.next,
+      focusNode: _invoiceFocus,
+      nextNode: _valueFocus,
     );
   }
 
-  Widget _buildValue(){
+  Widget _buildValue() {
     return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Value is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        cValue=  int.parse(value);
+      errorMsg: 'Value is required',
+      onSaved: (String value) {
+        cValue = int.parse(value);
       },
       labelText: 'Value of Bill',
       hintText: 'Enter Value',
-      keyboardType:TextInputType.number,
+      keyboardType: TextInputType.number,
+      textInputAction: TextInputAction.done,
+      focusNode: _valueFocus,
     );
   }
 
-  Widget _buildAdress(){
+  Widget _buildAdress() {
     return MyTextFormField(
-      validator:(String value){
-        if(value.isEmpty){
-          return 'Adress is required';
-        }
-        return null;
-      },
-      onSaved: (String value){
-        adress =  value;
+      errorMsg: 'Adress is required',
+      onSaved: (String value) {
+        adress = value;
       },
       labelText: 'Adress Of The Owner',
       hintText: 'Enter Adress',
+      textInputAction: TextInputAction.next,
+      focusNode: _addressFocus,
+      nextNode: _phoneFocus,
     );
   }
 
-   _myRaisedButton(){
+  _myRaisedButton() {
     return MyRaisedButton(
-      onPressed:(){
-        if(!_formKey.currentState.validate()){
-                  return;
-                  }
-                    _formKey.currentState.save();
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CreditSummery(
-                          month: _month,
-                          year:_year,
-                          name: name,
-                          pNumber: pNumber,
-                          cValue: cValue,
-                          invoice:invoice,
-                          date:_date,
-                          day:_date,
-                          adress:adress,
-                        )));
+      onPressed: () {
+        if (!_formKey.currentState.validate()) {
+          return;
+        }
+        _formKey.currentState.save();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => CreditSummery(
+                      month: _month,
+                      year: _year,
+                      name: name,
+                      pNumber: pNumber,
+                      cValue: cValue,
+                      invoice: invoice,
+                      date: _date,
+                      day: _date,
+                      adress: adress,
+                    )));
       },
       size: 200.0,
       color: Colors.blue,
@@ -170,25 +160,25 @@ class _AddCreditState extends State<AddCredit> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar:AppBar(
-        title:Text('Add Check')
-      ),
+    return Scaffold(
+      backgroundColor: Color(0xFF57DAD7),
+      appBar: AppBar(centerTitle: true, title: Text('Add Credit')),
       body: Form(
-        key: _formKey,
-        child:ListView(children: <Widget>[
-          SizedBox(height:20.0),
-          _selectDateButton(),
-          SizedBox(height:20.0),
-          _buildName(),
-          _buildAdress(),
-          _buildPNumber(),
-          _buildInvoice(),
-          _buildValue(),
-          SizedBox(height:20.0),
-          _myRaisedButton()
-        ],)
-      ),
+          key: _formKey,
+          child: ListView(
+            children: <Widget>[
+              SizedBox(height: 20.0),
+              _selectDateButton(),
+              SizedBox(height: 20.0),
+              _buildName(),
+              _buildAdress(),
+              _buildPNumber(),
+              _buildInvoice(),
+              _buildValue(),
+              SizedBox(height: 20.0),
+              _myRaisedButton()
+            ],
+          )),
     );
   }
 }

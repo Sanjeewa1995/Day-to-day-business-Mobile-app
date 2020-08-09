@@ -18,7 +18,7 @@ class _CheckOwnerState extends State<CheckOwner> {
 
     getOwners() async {
     var firestore = Firestore.instance;
-    var  qn = await firestore.collection('Wijaya Check').where('Name' , isEqualTo: name).snapshots();
+    var  qn = await firestore.collection('Wijaya Cheque').where('Name' , isEqualTo: name).snapshots();
     return qn;
   }
 
@@ -34,7 +34,7 @@ class _CheckOwnerState extends State<CheckOwner> {
   }
 
     _updateData(selectDoc , newValue){
-      Firestore.instance.collection('Wijaya Check').document(selectDoc).updateData(newValue);
+      Firestore.instance.collection('Wijaya Cheque').document(selectDoc).updateData(newValue);
     }
 
   @override
@@ -93,7 +93,7 @@ class _CheckOwnerState extends State<CheckOwner> {
                           )
                         ),
                         SizedBox(height:10.0),
-                          Text('Check Number: ' + snapshot.data.documents[index].data['Check Number'].toString(),
+                          Text('Check Number: ' + snapshot.data.documents[index].data['Cheque Number'].toString(),
                           style: TextStyle(
                             fontSize:20.0,
                             color:Colors.black,
@@ -107,7 +107,7 @@ class _CheckOwnerState extends State<CheckOwner> {
                           )
                         ),
                         SizedBox(height:10.0),
-                        Text('Value: ' + snapshot.data.documents[index].data['Check Value'].toString(),
+                        Text('Value: ' + snapshot.data.documents[index].data['Cheque Value'].toString(),
                           style: TextStyle(
                             fontSize:20.0,
                             color:Colors.black,

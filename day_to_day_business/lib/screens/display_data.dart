@@ -1,3 +1,6 @@
+import 'package:day_to_day_business/screens/display_c_cheque.dart';
+import 'package:day_to_day_business/search_credit_owners.dart';
+
 import 'display_check.dart';
 import 'package:day_to_day_business/screens/day_wise_summery.dart';
 import 'package:day_to_day_business/screens/display_check.dart';
@@ -6,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:day_to_day_business/custom_widgets/buttons.dart';
 import 'package:flutter_rounded_date_picker/rounded_picker.dart';
 import 'package:intl/intl.dart';
-import 'display_credit.dart';
 
 class DisplayData extends StatefulWidget {
   DisplayData({Key key}) : super(key: key);
@@ -15,14 +17,12 @@ class DisplayData extends StatefulWidget {
 }
 
 class _DisplayDataState extends State<DisplayData> {
+  String _date;
+  String _month = DateTime.now().month.toString();
+  String _year = DateTime.now().year.toString();
+  String _day = DateTime.now().day.toString();
 
-  String _date ;
-  String _month =DateTime.now().month.toString();
-  String _year =DateTime.now().year.toString();
-  String _day =DateTime.now().day.toString();
-
-  _dateFlicker() async{
-
+  _dateFlicker() async {
     DateTime _dateTime = await showRoundedDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -32,23 +32,28 @@ class _DisplayDataState extends State<DisplayData> {
       theme: ThemeData.dark(),
     );
     setState(() {
-      _date =  DateFormat.yMMMMd().format( _dateTime);
+      _date = DateFormat.yMMMMd().format(_dateTime);
       _month = _dateTime.month.toString();
-      _year =_dateTime.year.toString();
-      _day =_dateTime.day.toString();
+      _year = _dateTime.year.toString();
+      _day = _dateTime.day.toString();
     });
   }
 
-  _dayWiseSummery(){
+  _dayWiseSummery() {
     return MyRaisedButton(
-      onPressed:(){
+      onPressed: () {
         _dateFlicker();
-        if( _date != null){
+        if (_date != null) {
           Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DayWiseSummery(year: _year, month: _month, day: _day, date: _date,)));
-        } else{
+              context,
+              MaterialPageRoute(
+                  builder: (context) => DayWiseSummery(
+                        year: _year,
+                        month: _month,
+                        day: _day,
+                        date: _date,
+                      )));
+        } else {
           Text('Loging.......');
         }
       },
@@ -60,16 +65,21 @@ class _DisplayDataState extends State<DisplayData> {
     );
   }
 
-  _monthWiseSummery(){
+  _monthWiseSummery() {
     return MyRaisedButton(
-      onPressed:(){
+      onPressed: () {
         _dateFlicker();
-        if(_date != null){
+        if (_date != null) {
           Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => MonthWiseSummery(year: _year, month: _month, day: _day, date: _date,)));
-        } else{
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MonthWiseSummery(
+                        year: _year,
+                        month: _month,
+                        day: _day,
+                        date: _date,
+                      )));
+        } else {
           Text('Loding......');
         }
       },
@@ -81,13 +91,11 @@ class _DisplayDataState extends State<DisplayData> {
     );
   }
 
-  _check(){
+  _check() {
     return MyRaisedButton(
-      onPressed:(){
-          Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DisplayCheck()));
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => DisplayCheck()));
       },
       size: 300.0,
       color: Colors.blue,
@@ -97,13 +105,10 @@ class _DisplayDataState extends State<DisplayData> {
     );
   }
 
-  _credit(){
+  _credit() {
     return MyRaisedButton(
-      onPressed:(){
-          Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => DisplayCredit()));
+      onPressed: () {
+        showSearch(context: context, delegate: SearchCreditOwners());
       },
       size: 300.0,
       color: Colors.blue,
@@ -113,24 +118,37 @@ class _DisplayDataState extends State<DisplayData> {
     );
   }
 
+  _cCheck() {
+    return MyRaisedButton(
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => DisplayCompanyCheque()));
+      },
+      size: 300.0,
+      color: Colors.blue,
+      textColor: Colors.white,
+      label: 'Summery Of Company Cheque',
+      roundedBorde: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:Text('Display Data')
-      ),
-      body: Column(
-        children:<Widget>[
-          SizedBox(height:30.0),
-          _dayWiseSummery(),
-          SizedBox(height:20.0),
-          _monthWiseSummery(),
-          SizedBox(height:20.0),
-          _check(),
-          SizedBox(height:20.0),
-          _credit()
-        ]
-      ),
+      backgroundColor: Colors.white,
+      appBar: AppBar(centerTitle: true, title: Text('Display Data')),
+      body: Column(children: <Widget>[
+        SizedBox(height: 30.0),
+        _dayWiseSummery(),
+        SizedBox(height: 20.0),
+        _monthWiseSummery(),
+        SizedBox(height: 20.0),
+        _check(),
+        SizedBox(height: 20.0),
+        _credit(),
+        SizedBox(height: 20.0),
+        _cCheck(),
+      ]),
     );
   }
 }

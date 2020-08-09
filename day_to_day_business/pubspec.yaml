@@ -51,6 +51,8 @@ flutter:
   assets:
     - images/wijaya.jpg
     - images/company.jpg
+    - images/c1.jpg
+    - images/raigam.jpg
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

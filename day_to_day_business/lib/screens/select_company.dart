@@ -1,18 +1,16 @@
 import 'dart:ui';
 
+import 'package:day_to_day_business/custom_widgets/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:day_to_day_business/custom_widgets/buttons.dart';
 import 'home.dart';
+import 'package:day_to_day_business/raigam/home.dart';
 
 class SelectCompany extends StatefulWidget {
   SelectCompany({Key key}) : super(key: key);
 
   _SelectCompanyState createState() => _SelectCompanyState();
 }
-
-
 
 class _SelectCompanyState extends State<SelectCompany> {
   _myRaisedButton() {
@@ -29,39 +27,48 @@ class _SelectCompanyState extends State<SelectCompany> {
     );
   }
 
-  // String image = "images/company.jpg";
-   var asset =  AssetImage( "images/company.jpg");
+   _myRaisedButtonRaigam() {
+    return MyRaisedButton(
+      onPressed: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => RaigamHome()));
+      },
+      size: 300.0,
+      color: Colors.blue,
+      textColor: Colors.white,
+      label: 'Raigam Product',
+      roundedBorde: true,
+    );
+  }
 
   @override
   Scaffold build(BuildContext context) {
     return Scaffold(
-        body:asset==null? CircularProgressIndicator(): Container(
-           decoration: BoxDecoration(
-          image: DecorationImage(
-            image: asset,
-            fit: BoxFit.fill,
-          ),
-        ),
-            alignment: Alignment.center,
-            // decoration: BoxDecoration(
-            //     gradient: LinearGradient(
-            //   begin: Alignment.topRight,
-            //   end: Alignment.bottomLeft,
-            //   stops: [0.3, 1],
-            //   colors: <Color>[
-            //     Color(0xFF323232),
-            //     Color(0xFF9896f1),
-            //   ],
-            // )),
-            child: Column(children: <Widget>[
-              SizedBox(height: 50.0),
-              Center(
-                  child: Text('Select Your Company',
-                      style: GoogleFonts.yanoneKaffeesatz(
-                          color: Color(0xFFeeeeee),
-                          textStyle: TextStyle(fontSize: 40.0)))),
-              SizedBox(height: 50.0),
-              _myRaisedButton(),
-            ])));
+        backgroundColor: Color(0xFFFFFFFF),
+        body: Container(
+          margin: EdgeInsets.all(20.0),
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(
+                  'Select Your Company',
+                  style: headerStyle,
+                ),
+                Container(
+                    height: 250.0,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'images/c1.jpg',
+                      height: 250.0,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.cover,
+                    )),
+                _myRaisedButton(),
+               // SizedBox(height: 20.0,),
+                _myRaisedButtonRaigam(),
+              ]),
+        ));
   }
 }

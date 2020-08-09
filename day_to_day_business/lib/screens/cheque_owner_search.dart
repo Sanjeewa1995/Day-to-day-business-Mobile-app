@@ -26,7 +26,7 @@ class UseSearchDelegate extends SearchDelegate {
     @override
     Widget buildResults(BuildContext context) {
       return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Wijaya Check').snapshots(),
+      stream: Firestore.instance.collection('Wijaya Cheque').snapshots(),
       builder: (context , snapshot){
         if(!snapshot.hasData)
           return Center(child:CircularProgressIndicator(),);
@@ -50,7 +50,7 @@ class UseSearchDelegate extends SearchDelegate {
     @override
     Widget buildSuggestions(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('Wijaya Check').snapshots(),
+      stream: Firestore.instance.collection('Wijaya Cheque').snapshots(),
       builder: (context , snapshot){
         if(!snapshot.hasData)
           return Center(child:CircularProgressIndicator(),);

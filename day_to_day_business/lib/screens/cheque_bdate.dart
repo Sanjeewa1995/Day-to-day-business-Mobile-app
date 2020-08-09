@@ -14,29 +14,6 @@ class _CheckBankDateState extends State<CheckBankDate> {
   final String date;
   _CheckBankDateState(this.date);
 
-  Stream owners;
-
-  getOwners() async {
-    var firestore = Firestore.instance;
-    var qn = await firestore
-        .collection('Wijaya Check')
-        .where('Bank Date', isEqualTo: date)
-        .where('Cash ok', isEqualTo: false)
-        .snapshots();
-    return qn;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getOwners().then((result) {
-      setState(() {
-        owners = result;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +34,11 @@ class _CheckBankDateState extends State<CheckBankDate> {
       ),
       body: Container(
           child: StreamBuilder(
-              stream: owners,
+              stream: Firestore.instance
+                  .collection('Wijaya Cheque')
+                  .where('Bank Date', isEqualTo: date)
+                  .where('Cash ok', isEqualTo: false)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: Text('Loading'));
@@ -95,7 +76,7 @@ class _CheckBankDateState extends State<CheckBankDate> {
                                 Text(
                                     'Check Number: ' +
                                         snapshot.data.documents[index]
-                                            .data['Check Number']
+                                            .data['Cheque Number']
                                             .toString(),
                                     style: TextStyle(
                                       fontSize: 20.0,
@@ -114,7 +95,7 @@ class _CheckBankDateState extends State<CheckBankDate> {
                                 Text(
                                     'Value: ' +
                                         snapshot.data.documents[index]
-                                            .data['Check Value']
+                                            .data['Cheque Value']
                                             .toString(),
                                     style: TextStyle(
                                       fontSize: 20.0,
